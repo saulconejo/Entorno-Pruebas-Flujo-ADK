@@ -1,16 +1,34 @@
-# reserva_agent.py
-from google.adk.agents import BaseAgent
-from google.adk.events import Event
-from google.adk.agents.invocation_context import InvocationContext
-from data.restaurant_data import RestaurantTools
+from typing import Optional  # Añade esta importación al principio del archivo
+from google.adk.agents import LlmAgent
+from google.genai.types import GenerateContentConfig
+from data.restaurant_data import MODEL_GEMINI_2_0_FLASH
+from reserva_agent.prompts import GLOBAL_INSTRUCTION_RESERVA, INSTRUCTION_RESERVA
+from data.restaurant_data import (
+    check_table_availability_tool,
+    create_reservation_tool,
+    update_reservation_tool,
+    cancel_reservation_tool,
+    find_reservation_by_name_tool
+)
 
-class ReservaAgent(BaseAgent):
-    async def _run_async_impl(self, ctx: InvocationContext):
-        data = ctx.session.state
-        result = RestaurantTools.get_available_tables(
-            date=data["date"],
-            time=data["time"],
-            party_size=data["party_size"]
-        )
-        ctx.session.state["available_tables"] = result
-        yield Event(author=self.name, message="Mesas consultadas", final=True)
+# Instancia del agente de reservas usando LlmAgent
+ReservaAgent = LlmAgent(
+    name="ReservaAgent",
+    model=MODEL_GEMINI_2_0_FLASH,
+    description="Agente que gestiona el sistema de reservas del restaurante.",
+    tools=[
+        check_table_availability_tool,
+        create_reservation_tool,
+        update_reservation_tool,
+        cancel_reservation_tool,
+        find_reservation_by_name_tool
+    ],
+    global_instruction=GLOBAL_INSTRUCTION_RESERVA,
+    instruction=INSTRUCTION_RESERVA,
+    generate_content_config=GenerateContentConfig(
+        temperature=0.0,
+        max_output_tokens=200,
+        candidate_count=1,
+        stop_sequences=["\n\nUser:", "\n\nHuman:"]
+    )
+)

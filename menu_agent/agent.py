@@ -1,12 +1,35 @@
-# menu_agent.py
-from google.adk.agents import BaseAgent
-from google.adk.events import Event
-from google.adk.agents.invocation_context import InvocationContext
-from data.restaurant_data import RestaurantTools
+from typing import Optional
+from google.adk.agents import LlmAgent
+from google.genai.types import GenerateContentConfig
+from data.restaurant_data import MODEL_GEMINI_2_0_FLASH
+from menu_agent.prompts import GLOBAL_INSTRUCTION_MENU, INSTRUCTION_MENU
+from data.restaurant_data import (
+    list_menu_categories_tool,
+    get_dishes_by_category_tool,
+    get_dish_details_tool,
+    filter_menu_by_dietary_tool,
+    find_dishes_by_ingredient_tool
+)
 
-class MenuAgent(BaseAgent):
-    async def _run_async_impl(self, ctx: InvocationContext):
-        restrictions = ctx.session.state["dietary_restrictions"]
-        result = RestaurantTools.filter_menu_by_dietary(restrictions)
-        ctx.session.state["filtered_menu"] = result
-        yield Event(author=self.name, message="Menú filtrado", final=True)
+
+# Instancia del agente de menú usando LlmAgent
+MenuAgent = LlmAgent(
+    name="MenuAgent",
+    model=MODEL_GEMINI_2_0_FLASH,
+    description="Agente que gestiona consultas y navegación del menú del restaurante.",
+    tools=[
+        list_menu_categories_tool,
+        get_dishes_by_category_tool,
+        get_dish_details_tool,
+        filter_menu_by_dietary_tool,
+        find_dishes_by_ingredient_tool
+    ],
+    global_instruction=GLOBAL_INSTRUCTION_MENU,
+    instruction=INSTRUCTION_MENU,
+    generate_content_config=GenerateContentConfig(
+        temperature=0.0,
+        max_output_tokens=200,
+        candidate_count=1,
+        stop_sequences=["\n\nUser:", "\n\nHuman:"]
+    )
+)
