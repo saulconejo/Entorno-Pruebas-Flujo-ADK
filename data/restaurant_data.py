@@ -1,49 +1,35 @@
 from typing import List, Dict, Optional
 
-# Constantes y datos del restaurante
-MENU_ITEMS = {
-    "paella": {
-        "name": "Paella Valenciana",
-        "category": "principales",
-        "price": 18.50,
-        "ingredients": ["arroz", "pollo", "conejo", "judías verdes", "garrofón", "tomate", "azafrán"],
-        "dietary": ["sin lácteos"],
-        "prep_time": 45,
-        "available": True
-    },
-    "tortilla": {
-        "name": "Tortilla Española",
-        "category": "entrantes",
-        "price": 9.00,
-        "ingredients": ["patata", "cebolla", "huevo", "aceite de oliva"],
-        "dietary": ["vegetariano", "sin gluten"],
-        "prep_time": 25,
-        "available": True
-    },
-    "gazpacho": {
-        "name": "Gazpacho Andaluz",
-        "category": "entrantes",
-        "price": 7.50,
-        "ingredients": ["tomate", "pimiento", "pepino", "ajo", "aceite de oliva", "vinagre"],
-        "dietary": ["vegano", "sin gluten", "sin lácteos"],
-        "prep_time": 15,
-        "available": True
-    },
-    # ... más platos aquí ...
-}
 
-TABLES = {
-    1: {"capacity": 2, "location": "ventana", "available": True},
-    2: {"capacity": 4, "location": "interior", "available": True},
-    3: {"capacity": 6, "location": "terraza", "available": True},
-    4: {"capacity": 8, "location": "salon_privado", "available": True},
-    5: {"capacity": 12, "location": "salon_principal", "available": True},
-}
-
-RESERVATIONS = {}  # Almacena las reservas activas
 
 # Funciones para el modelo
 MODEL_GEMINI_2_0_FLASH = "gemini-2.0-flash"
+
+import json
+import os
+
+
+DATA_FILE = "data.json"
+
+def load_data():
+    if not os.path.exists(DATA_FILE):
+        return {"menu": {}, "mesas": {}, "reservas": {}}
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def save_data(data):
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+# Carga inicial
+data = load_data()
+
+
+# Cargar datos iniciales
+MENU_ITEMS = data["menu"]
+TABLES = data["mesas"]
+RESERVATIONS = data["reservas"]
+
 
 # Herramientas definidas directamente
 
@@ -137,47 +123,46 @@ def get_dish_details_tool(dish_name: str):
     
     return f"No encontramos el plato '{dish_name}' en nuestro menú."
 
-def check_table_availability_tool(party_size: int, date: str, time: str):
-    """Verifica la disponibilidad de mesas para un número de personas en una fecha y hora específicas."""
+def check_table_availability_tool(party_size: int):
+    """Verifica disponibilidad de mesas solo en función del número de personas, sin considerar fecha ni hora."""
     available_tables = []
-    
-    # Comprobamos qué mesas pueden acomodar el número de personas
+
     for table_id, table_details in TABLES.items():
-        if table_details["capacity"] >= party_size and table_details.get("available", False):
-            # Verificar que no esté reservada para esa fecha y hora
-            reservation_key = f"{date}_{time}_{table_id}"
-            if reservation_key not in RESERVATIONS:
-                available_tables.append({
-                    "table_id": table_id,
-                    "capacity": table_details["capacity"],
-                    "location": table_details.get("location", "No especificada")
-                })
-    
+        if table_details["capacity"] >= party_size and table_details.get("available", True):
+            available_tables.append({
+                "table_id": table_id,
+                "capacity": table_details["capacity"],
+                "location": table_details.get("location", "No especificada")
+            })
+
     if not available_tables:
-        return f"Lo sentimos, no hay mesas disponibles para {party_size} personas en {date} a las {time}."
-    
+        return {
+            "available": False,
+            "message": f"Lo sentimos, no hay mesas disponibles para {party_size} personas."
+        }
+
     return {
         "available": True,
-        "message": f"Tenemos {len(available_tables)} mesa(s) disponible(s) para {party_size} personas en {date} a las {time}.",
+        "message": f"Tenemos {len(available_tables)} mesa(s) disponible(s) para {party_size} personas.",
         "tables": available_tables
     }
 
+
 def create_reservation_tool(name: str, party_size: int, date: str, time: str, phone: Optional[str] = None, special_requests: Optional[str] = None):
     """Crea una nueva reserva con los detalles proporcionados."""
-    # Buscar mesa disponible
-    available_tables_info = check_table_availability_tool(party_size, date, time)
+
+
+    # Pasar datos correctamente
+    available_tables_info = check_table_availability_tool(party_size)
     
     if not isinstance(available_tables_info, dict) or not available_tables_info.get("available", False):
-        return "No hay mesas disponibles para esa fecha y hora. Por favor, intente con otro horario."
+        return available_tables_info["message"]
     
-    # Asignar la primera mesa disponible
     selected_table = available_tables_info["tables"][0]["table_id"]
     
-    # Generar ID único para la reserva
     import uuid
-    reservation_id = str(uuid.uuid4())[:8]  # ID corto para fácil referencia
+    reservation_id = str(uuid.uuid4())[:8]
     
-    # Guardar la reserva
     reservation_key = f"{date}_{time}_{selected_table}"
     RESERVATIONS[reservation_key] = {
         "id": reservation_id,
@@ -190,16 +175,18 @@ def create_reservation_tool(name: str, party_size: int, date: str, time: str, ph
         "special_requests": special_requests
     }
     
-    # Añadir referencia para búsqueda por nombre
     if name not in RESERVATIONS:
         RESERVATIONS[name] = []
     RESERVATIONS[name].append(reservation_id)
     
+    save_data(data)
+
     return {
         "success": True,
         "reservation_id": reservation_id,
         "message": f"Reserva confirmada para {name}, {party_size} personas, el {date} a las {time}. Su código de reserva es: {reservation_id}"
     }
+
 
 def cancel_reservation_tool(reservation_id: str):
     """Cancela una reserva existente."""
@@ -391,7 +378,7 @@ def update_reservation_tool(reservation_id: str, new_date: Optional[str] = None,
         party_size_to_check = new_party_size if new_party_size else old_reservation["party_size"]
         
         # Verificar disponibilidad
-        availability = check_table_availability_tool(party_size_to_check, date_to_check, time_to_check)
+        availability = check_table_availability_tool(party_size_to_check)
         
         if not isinstance(availability, dict) or not availability.get("available", False):
             return f"No podemos modificar la reserva porque no hay disponibilidad para {party_size_to_check} personas en {date_to_check} a las {time_to_check}."

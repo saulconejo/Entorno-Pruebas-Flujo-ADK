@@ -1,0 +1,39 @@
+{
+  "MENU_ITEMS": {
+    "paella": {
+      "name": "Paella Valenciana",
+      "category": "principales",
+      "price": 18.5,
+      "ingredients": ["arroz", "pollo", "conejo", "judías verdes", "garrofón", "tomate", "azafrán"],
+      "dietary": ["sin lácteos"],
+      "prep_time": 45,
+      "available": true
+    },
+    "tortilla": {
+      "name": "Tortilla Española",
+      "category": "entrantes",
+      "price": 9.0,
+      "ingredients": ["patata", "cebolla", "huevo", "aceite de oliva"],
+      "dietary": ["vegetariano", "sin gluten"],
+      "prep_time": 25,
+      "available": true
+    },
+    "gazpacho": {
+      "name": "Gazpacho Andaluz",
+      "category": "entrantes",
+      "price": 7.5,
+      "ingredients": ["tomate", "pimiento", "pepino", "ajo", "aceite de oliva", "vinagre"],
+      "dietary": ["vegano", "sin gluten", "sin lácteos"],
+      "prep_time": 15,
+      "available": true
+    }
+  },
+  "TABLES": {
+    "1": { "capacity": 2, "location": "ventana", "available": true },
+    "2": { "capacity": 4, "location": "interior", "available": true },
+    "3": { "capacity": 6, "location": "terraza", "available": true },
+    "4": { "capacity": 8, "location": "salon_privado", "available": true },
+    "5": { "capacity": 12, "location": "salon_principal", "available": true }
+  },
+  "RESERVATIONS": {}
+}
