@@ -1,0 +1,606 @@
+{
+  "DEVOLUCIONES": [
+    {
+        "id": "DEV-2024-001",
+        "factura_id": "FCT-2024-002",
+        "fecha": "2024-06-15T10:30:00Z",
+        "motivo": "Error en cantidad solicitada - exceso de licencias",
+        "lineas_devueltas": [
+            {
+                "producto_id": "PRD-005",
+                "cantidad": 1.0,
+                "precio_unitario": 340.0,
+                "descuento_porcentaje": 0.03,
+                "descuento_fijo": 0.0,
+                "impuestos": 71.46,
+                "subtotal": 329.8,
+                "total": 401.26
+            }
+        ],
+        "total_devuelto": 401.26,
+        "procesada": true,
+        "metadatos": {
+            "aprobada_por": "MGR-001",
+            "motivo_detallado": "El cliente solicitó reducir licencias por ajustes en su plantilla"
+        }
+    }
+],
+  "PAGOS": [
+    {
+        "id": "PAG-2024-001",
+        "factura_id": "FCT-2024-001",
+        "fecha_pago": "2024-06-28T14:30:00Z",
+        "monto": 5362.56,
+        "metodo_pago": "transferencia",
+        "referencia_bancaria": "TRF-20240628-001",
+        "estado": "completado",
+        "numero_cuenta_cliente": "ES91 2100 0418 4502 0005 1332",
+        "metadatos": {
+            "confirmacion_bancaria": true,
+            "notas": "Pago recibido a tiempo"
+        }
+    },
+    {
+        "id": "PAG-2024-002",
+        "factura_id": "FCT-2024-005",
+        "fecha_pago": "2024-07-08T09:15:00Z",
+        "monto": 5322.0,
+        "metodo_pago": "transferencia",
+        "referencia_bancaria": "TRF-20240708-002",
+        "estado": "completado",
+        "numero_cuenta_cliente": "ES67 0128 0001 2300 4567 8901",
+        "metadatos": {
+            "confirmacion_bancaria": true,
+            "notas": "Pago recibido con descuento aplicado"
+        }
+    }
+],
+
+"CLIENTES": [
+    {
+        "id": "CLT-001",
+        "nombre": "Innovatech Solutions S.L.",
+        "email": "facturacion@innovatech.es",
+        "telefono": "+34 965 123 456",
+        "direccion": "Parque Tecnológico, Calle Innovación 15, 03202 Elda",
+        "segmento": "premium",
+        "fecha_registro": "2023-03-15T10:30:00Z",
+        "limite_credito": 75000.0,
+        "descuento_default": 0.08,
+        "riesgo_impago": 0.01,
+        "terminos_pago": 45,
+        "numero_cuenta": "ES91 2100 0418 4502 0005 1332",
+        "activo": true,
+        "metadatos": {
+            "vendedor_asignado": "VEN-001",
+            "canal_adquisicion": "referido",
+            "notas": "Cliente premium, siempre paga a tiempo"
+        }
+    },
+    {
+        "id": "CLT-002", 
+        "nombre": "Comercial Mediterráneo S.A.",
+        "email": "administracion@comercialmed.com",
+        "telefono": "+34 966 234 567",
+        "direccion": "Avenida del Puerto 89, 03001 Alicante",
+        "segmento": "standard",
+        "fecha_registro": "2023-07-22T14:15:00Z",
+        "limite_credito": 25000.0,
+        "descuento_default": 0.03,
+        "riesgo_impago": 0.05,
+        "terminos_pago": 30,
+        "numero_cuenta": "ES76 0049 0001 5025 1234 5678",
+        "activo": true,
+        "metadatos": {
+            "vendedor_asignado": "VEN-002",
+            "canal_adquisicion": "web",
+            "notas": "Cliente estable, volumen medio"
+        }
+    },
+    {
+        "id": "CLT-003",
+        "nombre": "Startup Digital Hub S.L.",
+        "email": "billing@digitalhub.es", 
+        "telefono": "+34 963 345 678",
+        "direccion": "Calle Valencia 67, 03003 Alicante",
+        "segmento": "basic",
+        "fecha_registro": "2024-01-10T09:45:00Z",
+        "limite_credito": 8000.0,
+        "descuento_default": 0.0,
+        "riesgo_impago": 0.15,
+        "terminos_pago": 15,
+        "numero_cuenta": "ES32 0182 1234 5678 9012 3456",
+        "activo": true,
+        "metadatos": {
+            "vendedor_asignado": "VEN-003",
+            "canal_adquisicion": "campaña_linkedin",
+            "notas": "Startup en crecimiento, pagos irregulares"
+        }
+    },
+    {
+        "id": "CLT-004",
+        "nombre": "Industrias Levante S.A.",
+        "email": "contabilidad@industriaslevante.es",
+        "telefono": "+34 965 456 789",
+        "direccion": "Polígono Industrial Los Álamos, Nave 12, 03600 Elda",
+        "segmento": "premium",
+        "fecha_registro": "2022-11-05T11:20:00Z", 
+        "limite_credito": 120000.0,
+        "descuento_default": 0.12,
+        "riesgo_impago": 0.02,
+        "terminos_pago": 60,
+        "numero_cuenta": "ES45 0075 0001 8500 0123 4567",
+        "activo": true,
+        "metadatos": {
+            "vendedor_asignado": "VEN-001",
+            "canal_adquisicion": "visita_comercial",
+            "notas": "Cliente histórico, volumen muy alto"
+        }
+    },
+    {
+        "id": "CLT-005",
+        "nombre": "Consultoría Empresarial Moderna S.L.",
+        "email": "admin@consultoriamoderna.com",
+        "telefono": "+34 965 567 890",
+        "direccion": "Plaza de España 23, 2º A, 03201 Elda",
+        "segmento": "standard",
+        "fecha_registro": "2023-09-12T16:30:00Z",
+        "limite_credito": 18000.0,
+        "descuento_default": 0.05,
+        "riesgo_impago": 0.08,
+        "terminos_pago": 30,
+        "numero_cuenta": "ES67 0128 0001 2300 4567 8901",
+        "activo": true,
+        "metadatos": {
+            "vendedor_asignado": "VEN-002",
+            "canal_adquisicion": "feria_comercial",
+            "notas": "Consultoría especializada en PYMES"
+        }
+    },
+    {
+        "id": "CLT-006",
+        "nombre": "Distribuciones Rápidas Express S.L.",
+        "email": "facturacion@rapidexpress.es",
+        "telefono": "+34 966 678 901",
+        "direccion": "Carretera Nacional 340, Km 85, 03114 Alicante",
+        "segmento": "basic",
+        "fecha_registro": "2024-02-28T13:45:00Z",
+        "limite_credito": 12000.0,
+        "descuento_default": 0.02,
+        "riesgo_impago": 0.12,
+        "terminos_pago": 20,
+        "numero_cuenta": "ES89 0081 0001 6789 0123 4567",
+        "activo": true,
+        "metadatos": {
+            "vendedor_asignado": "VEN-003",
+            "canal_adquisicion": "google_ads",
+            "notas": "Empresa de logística, pagos ocasionalmente tardíos"
+        }
+    }
+
+],
+
+"PRODUCTOS" : [
+    {
+        "id": "PRD-001",
+        "nombre": "Software de Gestión Pro",
+        "descripcion": "Licencia anual software gestión empresarial completo",
+        "categoria": "software",
+        "precio_base": 1200.0,
+        "costo": 300.0,
+        "stock_actual": 100,
+        "stock_minimo": 10,
+        "stock_maximo": 500,
+        "unidad_medida": "licencia",
+        "codigo_producto": "SGP-001",
+        "activo": true,
+        "datos_estacionales": {
+            "enero": 1.2, "febrero": 1.0, "marzo": 1.1,
+            "abril": 1.0, "mayo": 0.9, "junio": 0.95,
+            "julio": 0.8, "agosto": 0.75, "septiembre": 1.1,
+            "octubre": 1.15, "noviembre": 1.25, "diciembre": 1.3
+        },
+        "metadatos": {
+            "version": "v2.1",
+            "categoria_fiscal": "servicios_digitales",
+            "proveedor": "TechSoft Solutions"
+        }
+    },
+    {
+        "id": "PRD-002",
+        "nombre": "Consultoría Implementación",
+        "descripcion": "Servicio de consultoría para implementación de software",
+        "categoria": "servicios",
+        "precio_base": 850.0,
+        "costo": 450.0,
+        "stock_actual": 50,
+        "stock_minimo": 5,
+        "stock_maximo": 100,
+        "unidad_medida": "horas",
+        "codigo_producto": "CON-IMP-001",
+        "activo": true,
+        "datos_estacionales": {
+            "enero": 1.1, "febrero": 1.2, "marzo": 1.3,
+            "abril": 1.2, "mayo": 1.0, "junio": 0.9,
+            "julio": 0.7, "agosto": 0.6, "septiembre": 1.2,
+            "octubre": 1.3, "noviembre": 1.4, "diciembre": 1.1
+        },
+        "metadatos": {
+            "duracion_media": "8 horas",
+            "categoria_fiscal": "servicios_profesionales",
+            "certificacion_requerida": true
+        }
+    },
+    {
+        "id": "PRD-003",
+        "nombre": "Módulo CRM Avanzado",
+        "descripcion": "Extensión CRM con funciones avanzadas de análisis",
+        "categoria": "software",
+        "precio_base": 680.0,
+        "costo": 200.0,
+        "stock_actual": 75,
+        "stock_minimo": 15,
+        "stock_maximo": 200,
+        "unidad_medida": "licencia",
+        "codigo_producto": "CRM-ADV-001",
+        "activo": true,
+        "datos_estacionales": {
+            "enero": 1.0, "febrero": 1.1, "marzo": 1.2,
+            "abril": 1.1, "mayo": 1.0, "junio": 1.0,
+            "julio": 0.9, "agosto": 0.8, "septiembre": 1.1,
+            "octubre": 1.2, "noviembre": 1.3, "diciembre": 1.2
+        },
+        "metadatos": {
+            "requiere": "PRD-001",
+            "categoria_fiscal": "servicios_digitales",
+            "integracion": "API REST"
+        }
+    },
+    {
+        "id": "PRD-004",
+        "nombre": "Soporte Técnico Premium",
+        "descripcion": "Soporte técnico 24/7 con SLA garantizado",
+        "categoria": "servicios",
+        "precio_base": 2400.0,
+        "costo": 800.0,
+        "stock_actual": 25,
+        "stock_minimo": 5,
+        "stock_maximo": 50,
+        "unidad_medida": "contrato_anual",
+        "codigo_producto": "SUP-PREM-001",
+        "activo": true,
+        "datos_estacionales": {
+            "enero": 1.3, "febrero": 1.2, "marzo": 1.1,
+            "abril": 1.0, "mayo": 1.0, "junio": 1.0,
+            "julio": 1.0, "agosto": 1.0, "septiembre": 1.1,
+            "octubre": 1.2, "noviembre": 1.3, "diciembre": 1.4
+        },
+        "metadatos": {
+            "sla_respuesta": "2 horas",
+            "categoria_fiscal": "servicios_profesionales",
+            "incluye_formacion": true
+        }
+    },
+    {
+        "id": "PRD-005",
+        "nombre": "Licencia Básica Contabilidad",
+        "descripcion": "Software básico de contabilidad para PYMES",
+        "categoria": "software",
+        "precio_base": 340.0,
+        "costo": 85.0,
+        "stock_actual": 200,
+        "stock_minimo": 25,
+        "stock_maximo": 1000,
+        "unidad_medida": "licencia",
+        "codigo_producto": "CONT-BAS-001",
+        "activo": true,
+        "datos_estacionales": {
+            "enero": 1.4, "febrero": 1.3, "marzo": 1.5,
+            "abril": 1.2, "mayo": 0.9, "junio": 0.8,
+            "julio": 0.7, "agosto": 0.7, "septiembre": 1.0,
+            "octubre": 1.2, "noviembre": 1.3, "diciembre": 1.6
+        },
+        "metadatos": {
+            "target_usuarios": "1-10",
+            "categoria_fiscal": "servicios_digitales",
+            "actualizaciones_incluidas": true
+        }
+    },
+    {
+        "id": "PRD-006",
+        "nombre": "Formación Personalizada",
+        "descripcion": "Curso de formación adaptado a las necesidades del cliente",
+        "categoria": "formacion",
+        "precio_base": 1150.0,
+        "costo": 650.0,
+        "stock_actual": 30,
+        "stock_minimo": 3,
+        "stock_maximo": 60,
+        "unidad_medida": "curso",
+        "codigo_producto": "FORM-PERS-001",
+        "activo": true,
+        "datos_estacionales": {
+            "enero": 1.2, "febrero": 1.3, "marzo": 1.4,
+            "abril": 1.3, "mayo": 1.1, "junio": 0.8,
+            "julio": 0.6, "agosto": 0.5, "septiembre": 1.3,
+            "octubre": 1.4, "noviembre": 1.3, "diciembre": 1.0
+        },
+        "metadatos": {
+            "duracion": "16 horas",
+            "modalidad": "presencial_online",
+            "categoria_fiscal": "servicios_educativos",
+            "certificado_incluido": true
+        }
+    }
+],
+
+
+"FACTURAS" : [
+    {
+        "id": "FCT-2024-001",
+        "numero": "F-2024-001",
+        "cliente_id": "CLT-001",
+        "fecha_emision": "2024-06-01T09:00:00Z",
+        "fecha_vencimiento": "2024-07-16T23:59:59Z",
+        "fecha_pago": "2024-06-28T14:30:00Z",
+        "lineas": [
+            {
+                "producto_id": "PRD-001",
+                "cantidad": 2.0,
+                "precio_unitario": 1200.0,
+                "descuento_porcentaje": 0.08,
+                "descuento_fijo": 0.0,
+                "impuestos": 483.84,
+                "subtotal": 2208.0,
+                "total": 2691.84
+            },
+            {
+                "producto_id": "PRD-004",
+                "cantidad": 1.0,
+                "precio_unitario": 2400.0,
+                "descuento_porcentaje": 0.08,
+                "descuento_fijo": 0.0,
+                "impuestos": 462.72,
+                "subtotal": 2208.0,
+                "total": 2670.72
+            }
+        ],
+        "subtotal": 4416.0,
+        "descuento_total": 384.0,
+        "impuestos_total": 946.56,
+        "total": 5362.56,
+        "estado": "pagada",
+        "moneda": "EUR",
+        "notas": "Factura para renovación anual + soporte premium",
+        "numero_cuenta_cliente": "ES91 2100 0418 4502 0005 1332",
+        "metadatos": {
+            "canal_venta": "renovacion_automatica",
+            "representante": "VEN-001",
+            "campania": "Q2-2024",
+            "forma_pago": "transferencia"
+        }
+    },
+    {
+        "id": "FCT-2024-002",
+        "numero": "F-2024-002",
+        "cliente_id": "CLT-002",
+        "fecha_emision": "2024-06-03T11:15:00Z",
+        "fecha_vencimiento": "2024-07-03T23:59:59Z",
+        "fecha_pago": null,
+        "lineas": [
+            {
+                "producto_id": "PRD-005",
+                "cantidad": 3.0,
+                "precio_unitario": 340.0,
+                "descuento_porcentaje": 0.03,
+                "descuento_fijo": 0.0,
+                "impuestos": 214.38,
+                "subtotal": 989.4,
+                "total": 1203.78
+            },
+            {
+                "producto_id": "PRD-002",
+                "cantidad": 8.0,
+                "precio_unitario": 850.0,
+                "descuento_porcentaje": 0.03,
+                "descuento_fijo": 0.0,
+                "impuestos": 1426.32,
+                "subtotal": 6596.0,
+                "total": 8022.32
+            }
+        ],
+        "subtotal": 7585.4,
+        "descuento_total": 234.6,
+        "impuestos_total": 1640.7,
+        "total": 9226.1,
+        "estado": "pendiente",
+        "moneda": "EUR",
+        "notas": "Licencias contabilidad + consultoría implementación",
+        "numero_cuenta_cliente": "ES76 0049 0001 5025 1234 5678",
+        "metadatos": {
+            "canal_venta": "web",
+            "representante": "VEN-002",
+            "campania": "pymes_q2",
+            "forma_pago": "transferencia"
+        }
+    },
+    {
+        "id": "FCT-2024-003",
+        "numero": "F-2024-003",
+        "cliente_id": "CLT-004",
+        "fecha_emision": "2024-06-05T16:45:00Z",
+        "fecha_vencimiento": "2024-08-04T23:59:59Z",
+        "fecha_pago": null,
+        "lineas": [
+            {
+                "producto_id": "PRD-001",
+                "cantidad": 10.0,
+                "precio_unitario": 1200.0,
+                "descuento_porcentaje": 0.12,
+                "descuento_fijo": 0.0,
+                "impuestos": 2217.6,
+                "subtotal": 10560.0,
+                "total": 12777.6
+            },
+            {
+                "producto_id": "PRD-003",
+                "cantidad": 10.0,
+                "precio_unitario": 680.0,
+                "descuento_porcentaje": 0.12,
+                "descuento_fijo": 0.0,
+                "impuestos": 1446.72,
+                "subtotal": 5984.0,
+                "total": 7430.72
+            },
+            {
+                "producto_id": "PRD-006",
+                "cantidad": 2.0,
+                "precio_unitario": 1150.0,
+                "descuento_porcentaje": 0.12,
+                "descuento_fijo": 0.0,
+                "impuestos": 483.84,
+                "subtotal": 2024.0,
+                "total": 2507.84
+            }
+        ],
+        "subtotal": 18568.0,
+        "descuento_total": 2792.0,
+        "impuestos_total": 4148.16,
+        "total": 22716.16,
+        "estado": "pendiente",
+        "moneda": "EUR",
+        "notas": "Pedido grande - Licencias + CRM + Formación",
+        "numero_cuenta_cliente": "ES45 0075 0001 8500 0123 4567",
+        "metadatos": {
+            "canal_venta": "visita_comercial",
+            "representante": "VEN-001",
+            "campania": "enterprise_q2",
+            "forma_pago": "transferencia",
+            "aprobacion_credito": "OK"
+        }
+    },
+    {
+        "id": "FCT-2024-004",
+        "numero": "F-2024-004",
+        "cliente_id": "CLT-003",
+        "fecha_emision": "2024-06-08T10:20:00Z",
+        "fecha_vencimiento": "2024-06-23T23:59:59Z",
+        "fecha_pago": null,
+        "lineas": [
+            {
+                "producto_id": "PRD-005",
+                "cantidad": 1.0,
+                "precio_unitario": 340.0,
+                "descuento_porcentaje": 0.0,
+                "descuento_fijo": 0.0,
+                "impuestos": 71.4,
+                "subtotal": 340.0,
+                "total": 411.4
+            }
+        ],
+        "subtotal": 340.0,
+        "descuento_total": 0.0,
+        "impuestos_total": 71.4,
+        "total": 411.4,
+        "estado": "vencida",
+        "moneda": "EUR",
+        "notas": "Licencia básica para startup",
+        "numero_cuenta_cliente": "ES32 0182 1234 5678 9012 3456",
+        "metadatos": {
+            "canal_venta": "campaña_linkedin",
+            "representante": "VEN-003",
+            "campania": "startup_basic",
+            "forma_pago": "transferencia",
+            "recordatorios_enviados": 3
+        }
+    },
+    {
+        "id": "FCT-2024-005",
+        "numero": "F-2024-005",
+        "cliente_id": "CLT-005",
+        "fecha_emision": "2024-06-10T14:30:00Z",
+        "fecha_vencimiento": "2024-07-10T23:59:59Z",
+        "fecha_pago": "2024-07-08T09:15:00Z",
+        "lineas": [
+            {
+                "producto_id": "PRD-001",
+                "cantidad": 1.0,
+                "precio_unitario": 1200.0,
+                "descuento_porcentaje": 0.05,
+                "descuento_fijo": 0.0,
+                "impuestos": 238.0,
+                "subtotal": 1140.0,
+                "total": 1378.0
+            },
+            {
+                "producto_id": "PRD-002",
+                "cantidad": 4.0,
+                "precio_unitario": 850.0,
+                "descuento_porcentaje": 0.05,
+                "descuento_fijo": 0.0,
+                "impuestos": 714.0,
+                "subtotal": 3230.0,
+                "total": 3944.0
+            }
+        ],
+        "subtotal": 4370.0,
+        "descuento_total": 230.0,
+        "impuestos_total": 952.0,
+        "total": 5322.0,
+        "estado": "pagada",
+        "moneda": "EUR",
+        "notas": "Software + consultoría implementación",
+        "numero_cuenta_cliente": "ES67 0128 0001 2300 4567 8901",
+        "metadatos": {
+            "canal_venta": "feria_comercial",
+            "representante": "VEN-002",
+            "campania": "consultoras_q2",
+            "forma_pago": "transferencia"
+        }
+    },
+    {
+        "id": "FCT-2024-006",
+        "numero": "F-2024-006", 
+        "cliente_id": "CLT-006",
+        "fecha_emision": "2024-06-12T12:00:00Z",
+        "fecha_vencimiento": "2024-07-02T23:59:59Z",
+        "fecha_pago": null,
+        "lineas": [
+            {
+                "producto_id": "PRD-005",
+                "cantidad": 2.0,
+                "precio_unitario": 340.0,
+                "descuento_porcentaje": 0.02,
+                "descuento_fijo": 0.0,
+                "impuestos": 140.112,
+                "subtotal": 666.4,
+                "total": 806.512
+            },
+            {
+                "producto_id": "PRD-003",
+                "cantidad": 1.0,
+                "precio_unitario": 680.0,
+                "descuento_porcentaje": 0.02,
+                "descuento_fijo": 0.0,
+                "impuestos": 139.944,
+                "subtotal": 666.4,
+                "total": 806.344
+            }
+        ],
+        "subtotal": 1332.8,
+        "descuento_total": 27.2,
+        "impuestos_total": 280.056,
+        "total": 1612.856,
+        "estado": "pendiente",
+        "moneda": "EUR",
+        "notas": "Licencias básicas + módulo CRM",
+        "numero_cuenta_cliente": "ES89 0081 0001 6789 0123 4567",
+        "metadatos": {
+            "canal_venta": "google_ads",
+            "representante": "VEN-003",
+            "campania": "logistica_crm",
+            "forma_pago": "transferencia"
+        }
+    }
+    ]
+}
