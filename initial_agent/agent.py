@@ -10,44 +10,42 @@ Eres parte de un sistema de atención al cliente de una empresa de servicios.
 Sigue estrictamente el protocolo definido para cada agente.
 """
 
-def handle_general_query_tool(query: str):
-    """Maneja consultas generales directamente."""
-    query_lower = query.lower()
+def handle_general_query_tool(user_input: str) -> str:
+    """Clasifica el intento del usuario: saludo, pregunta, acción o desconocido."""
+    input_lower = user_input.strip().lower()
+
+    # Reglas básicas
+    greetings = ["hola", "buenos días", "buenas tardes", "saludos"]
+    actions = ["quiero", "necesito", "me gustaría", "hazme", "realizar", "crear", "hacer"]
+    question_starts = ["¿", "que", "qué", "cómo", "dónde", "cuándo", "por qué", "cuál"]
+
+    if any(word in input_lower for word in greetings):
+        return "saludo"
     
-    # Saludos
-    if any(greeting in query_lower for greeting in ["hola", "buenos días", "buenas tardes", "saludos"]):
-        return "¡Hola! Bienvenido a nuestro restaurante. ¿En qué puedo ayudarte hoy?"
+    if any(word in input_lower for word in actions):
+        return "acción"
     
-    # Despedidas
-    if any(farewell in query_lower for farewell in ["adiós", "gracias", "hasta luego"]):
-        return "¡Gracias por visitarnos! Esperamos verte pronto de nuevo."
-    
-    # Información general
-    if "ubicación" in query_lower or "dirección" in query_lower or "donde" in query_lower:
-        return "Estamos ubicados en Calle Principal 123, en el centro de la ciudad."
-    
-    if "horario" in query_lower or "cuando" in query_lower:
-        return "Nuestro horario es de 12:00 a 23:00, todos los días de la semana."
-    
-    # Consulta ambigua
-    return "Para poder ayudarte mejor, ¿podrías proporcionar más detalles sobre tu consulta?"
+    if "?" in input_lower or any(input_lower.startswith(q) for q in question_starts):
+        return "pregunta"
+
+    return "desconocido"
 
 
 # --- Agentes Especializados ---
 GreetingAgent = LlmAgent(
     name="GreetingAgent",
     model=MODEL_GEMINI_2_0_FLASH,
-    description="Maneja saludos y conversación trivial",
+    description="Maneja saludos, si no es un saludo no intervienes, siempre pregunta qué necesita el usuario.",
     global_instruction=GLOBAL_INSTRUCTION,
-    instruction="""
-    [Mantener el mismo contenido del prompt anterior]
+    instruction="""Vas a saludar cordialmente y a solicitar al usuario que realice una solicitud sobre temas de facturación, solicita los datos pertinentes y pasa a ValidatorAgent.
     """,
-    tools=[handle_general_query_tool],
     generate_content_config=GenerateContentConfig(
         temperature=0.0,
         max_output_tokens=150,
         stop_sequences=["\n\nUser:"]
-    )
+    ),
+
+    output_key="response"
 )
 
 ValidationAgent = LlmAgent(
@@ -56,28 +54,39 @@ ValidationAgent = LlmAgent(
     description="Valida preguntas antes de salir del bucle",
     global_instruction=GLOBAL_INSTRUCTION,
     instruction="""
-    [Mantener el mismo contenido del prompt anterior]
+        Eres un agente de validación de consultas.
+        Tu tarea es:
+        1. Validar si la consulta es una pregunta o solicitud de acción.
+        2. Si es válida, redirigir al agente correspondiente.
+        3. Si no es válida, devolver un mensaje de error y sugerencia.
+        
+        Ejemplos:
+        - "¿Cómo puedo pagar mi factura?" -> Redirigir a QuestionAgent
+        - "Quiero saber mi saldo" -> Redirigir a QuestionAgent
+        - "No entiendo nada" -> Devolver error y sugerencia
     """,
     generate_content_config=GenerateContentConfig(
         temperature=0.0,
         max_output_tokens=100
-    )
+    ),
+    output_key="validation_result"
 )
 
 # --- Loop Principal Corregido ---
 InitialAgent = LlmAgent(
     name="InitialAgent",
-    description="Bucle de atención inicial",
+    description="Bucle de atención inicial, solo si se saluda usa GreetingAgent o si se solicita o pregunta ValidationAgent",
     model=MODEL_GEMINI_2_0_FLASH,
     sub_agents=[GreetingAgent, ValidationAgent],
+    tools=[handle_general_query_tool],
     global_instruction=GLOBAL_INSTRUCTION,
     instruction="""    
-    Eres un agente de atención al cliente que maneja saludos y validaciones iniciales.
-    Tu tarea es:
-    1. Si es un saludo pasa a GreetingAgent y solicitas una que pida algo.
-    2. Si y solo si es una pregunta pasa a ValidationAgent y sales de InitialAgent.
-    3. Si no ocurre nada de eso, pide una solicitud válida al usuario.
-    """,
+        Eres un agente de atención al cliente que maneja saludos y cuestiones iniciales.
+        Tu tarea es:
+        1. Si el mensaje es un saludo (ej. 'hola', 'buenos días'), pasa a GreetingAgent.
+        2. Si el mensaje es una solicitud de acción o contiene verbos como 'quiero', 'necesito', 'me gustaría', etc., pasa a ValidationAgent.
+        3. Si es una pregunta, también pasa a ValidationAgent.
+        """,
     generate_content_config=GenerateContentConfig(
         temperature=0.0,
         max_output_tokens=100
